@@ -1,12 +1,14 @@
 ![Запретян <3](https://github.com/SHULKERPLAY/Zapretyan/blob/main/zapretyanrepo.png)
 > Readme is only available in russian
 
-# Запретян / Zapretyan
+# Запретян Лайт / Zapretyan Lite
 [![CodeFactor](https://www.codefactor.io/repository/github/shulkerplay/zapretyan/badge/main)](https://www.codefactor.io/repository/github/shulkerplay/zapretyan/overview/main) ![GitHub Release](https://img.shields.io/github/v/release/shulkerplay/zapretyan) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/shulkerplay/zapretyan) ![Discord](https://img.shields.io/discord/683814496942424078?label=Discord) ![YouTube Channel Views](https://img.shields.io/youtube/channel/views/UCWoypHEOaTh6N9zwCtRzr0w) 
 
 **Вывод новых блокировок ресурсов в Российской Федерации каждый день!**  
 
-Запретян - это набор скриптов работающий на Debian/Ubuntu, который собирает данные о блокировках и сравнивает их с предыдущими сохранёнными данными.  
+В данный момент это форк оригинальной Запретян, который обеспечит более лёгкое взаимодействие с API Discord и не только. Ридми и весь репозиторий это оригинальная запретян. Если вы видите этот текст, значит, она ещё в разработке.
+
+Запретян Лайт - это скрипт, работающий на Debian/Ubuntu, который собирает данные о блокировках и сравнивает их с предыдущими сохранёнными данными.
 
 ## Функции
  - Сбор аналитики: Дата и количество блокировок/разбанов
@@ -17,11 +19,10 @@
 
 ## Зависимости
 
- - Debian 12 или новее (О совместимости с Ubuntu неизвестно, только
+ - Debian 11 или новее (О совместимости с Ubuntu неизвестно, только
    пробовать...)
  - wget
- - node.js >= `18.0.0`
- - npm >= `9.0.0`
+ - curl
  - git
 
 ## Установка
