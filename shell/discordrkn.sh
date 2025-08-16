@@ -2,10 +2,6 @@
 bashdir=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 . $bashdir/config.cfg
 
-hook='curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data'
-json=$(cat send.json)
-#So POST to API executing by: $hook "$json" '$banhook'
-
 #status codes
 e0x0='Список сформирован (0x0)'
 e0x1='Не найдены вчерашние списки. Новые будут сформированы завтра (0x1)'
@@ -21,14 +17,6 @@ e0x3='Нет изменений в списке за сутки (0x3)'
 mkdir $shdir/msgbuff
 mkdir $shdir/msgbuff/ban
 mkdir $shdir/msgbuff/unban
-
-#
-#
-#
-#Code below is going to change so wait for new commits
-#
-#
-#
 
 #Git output marks new banned domains as + and the unbanned ones as - . So script remove the first line of git output and the first character '-' or '+' 
 #grep removes first character of the line and tail removes first line of output
@@ -61,16 +49,13 @@ if [ -e $shdir/new.txt ]; then
     if [ -e $shdir/old.txt ]; then
         echo -e "$e0x0"
     else
-        echo "$bancid" > $channelid
-        echo -e "\n *$e0x1* $errorping" > $send
-        $jsdir/send.sh
+        curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data '{"content": "'"*$e0x1*"' '"$errorping"'","username": "'"$botname"'","avatar_url": "'"$boticon"'"}' "$banhook"
         isban=false
         isunban=false
         analytics=false
     fi
 else
-        echo "$bancid" > $channelid
-        echo -e "\n *$e0x2* $errorping" > $send
+		curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data '{"content": "'"*$e0x2*"' '"$errorping"'","username": "'"$botname"'","avatar_url": "'"$boticon"'"}' "$banhook"
         $jsdir/send.sh
         isban=false
         isunban=false
@@ -95,33 +80,26 @@ fi
 
 #Send List of new domain Bans
 if [ "$isban" = true ]; then
-echo "Заблокированые сегодня домены" > $fieldname
-echo "$bancid" > $channelid
 if [ "$banbytes" -le "2" ]; then
     if [ "$errorsend" = true ]; then
-        echo -e "\n :orange_book: *В сегодняшнем списке нет новых заблокированых ресурсов!* $errorping" > $send
-        $jsdir/send.sh && sleep 2
+		curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data '{"content": ":orange_book: *В сегодняшнем списке нет новых заблокированых ресурсов!* '"$errorping"'","username": "'"$botname"'","avatar_url": "'"$boticon"'"}' "$banhook"
     else
         sleep 2
     fi
 else
 	for file1 in $shdir/msgbuff/ban/*
 		do
-		cat "$file1" > $send && $jsdir/sendembed.sh && sleep 2
+		embedlist=$(cat "$file1") && curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data '{"content": " ","embeds": [{"title": "Заблокированые сегодня домены","description": "'"$embedlist"'","color": 16753314,"footer": {"text": "Отправлено с помощью Заптетян Lite","icon_url": "'"$boticon"'"}}],"username": "'"$botname"'","avatar_url": "'"$boticon"'"}' "$banhook" && sleep 2
 		done
-	echo -e "**:fire: Сегодня заблокировано доменов:__ $bancount __!** \n :no_entry_sign: Всего заблокировано:__ $totalbanned __" > $send
-	$jsdir/send.sh && sleep 2
+	curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data '{"content": "**:fire: Сегодня заблокировано доменов:__ '"$bancount"' __!** \n:no_entry_sign: Всего заблокировано:__ '"$totalbanned"' __","username": "'"$botname"'","avatar_url": "'"$boticon"'"}' "$banhook"
 fi
 fi
 
 #Unban check
 if [ "$isunban" = true ]; then
-echo "Разблокированые сегодня домены" > $fieldname
-echo "$unbancid" > $channelid
 if [ "$unbanbytes" -le "2" ]; then
 	if [ "$errorsend" = true ]; then
-        echo -e "\n :orange_book: *Сегодня никого не разблокировали!* $errorping" > $send
-        $jsdir/send.sh && sleep 2
+		curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data '{"content": ":orange_book: *:orange_book: *Сегодня никого не разблокировали!* '"$errorping"'","username": "'"$botname"'","avatar_url": "'"$boticon"'"}' "$unbanhook"
     else
         sleep 2
     fi
@@ -129,15 +107,13 @@ else
     #Send Unban List
     for file2 in $shdir/msgbuff/unban/*
         do
-        cat "$file2" > $send && $jsdir/sendembed.sh && sleep 2
+		embedlist=$(cat "$file2") && curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data '{"content": " ","embeds": [{"title": "Разблокированые сегодня домены","description": "'"$embedlist"'","color": 10669055,"footer": {"text": "Отправлено с помощью Заптетян Lite","icon_url": "'"$boticon"'"}}],"username": "'"$botname"'","avatar_url": "'"$boticon"'"}' "$unbanhook" && sleep 2
         done
-echo -e "**:large_blue_diamond: Сегодня разблокировано доменов:__ $unbancount __! :large_blue_diamond:**" > $send
-$jsdir/send.sh && sleep 2
+curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data '{"content": "**:large_blue_diamond: Сегодня разблокировано доменов:__ '"$unbancount"' __! :large_blue_diamond:**","username": "'"$botname"'","avatar_url": "'"$boticon"'"}' "$unbanhook"
 fi
 fi
   
 #Cleanup
-rm $shdir/v2ray.zip
 rm $shdir/checkone.txt
 rm $shdir/checktwo.txt
 rm $shdir/bansite.txt
