@@ -33,9 +33,6 @@ git diff $shdir/old.txt $shdir/new.txt | grep ^- | sed 's/^.//' | tail -n +2 > $
 	split -C 3900 $shdir/unbansite.txt $shdir/msgbuff/unban/0x
     
 #Set Vars
-send=$jsdir/send.txt
-channelid=$jsdir/var/cid
-fieldname=$jsdir/var/name
 new=$shdir/new.txt
 old=$shdir/old.txt
 banbytes=$(stat -c%s $shdir/checkone.txt)
@@ -56,7 +53,6 @@ if [ -e $shdir/new.txt ]; then
     fi
 else
 		curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data '{"content": "'"*$e0x2*"' '"$errorping"'","username": "'"$botname"'","avatar_url": "'"$boticon"'"}' "$banhook"
-        $jsdir/send.sh
         isban=false
         isunban=false
         analytics=false
