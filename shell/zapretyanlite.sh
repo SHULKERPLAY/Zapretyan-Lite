@@ -1,4 +1,5 @@
 #!/bin/bash
+#Ver 1.17
 bashdir=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 . $bashdir/config.cfg
 
@@ -12,9 +13,9 @@ e0x2='Ошибка загрузки сегодняшнего списка (0x2)'
 e0x3='Нет изменений в списке за сутки (0x3)'
 
 #Download data
-    rm ${old:?}
-    mv $new $old
-    curl --insecure --output ${new:?} 'https://antifilter.download/list/domains.lst'
+rm ${old:?}
+mv $new $old
+curl --insecure --output ${new:?} 'https://antifilter.download/list/domains.lst'
 
 #Make Dirs
 mkdir $shdir/msgbuff
@@ -34,7 +35,7 @@ git diff $old $new | grep ^- | sed 's/^.//' | tail -n +2 > $shdir/checktwo.txt
 	echo "**$qdate**" >> $shdir/unbansite.txt
 	cat $shdir/checktwo.txt >> $shdir/unbansite.txt #New Unbanned Domains
 	split -C 3900 $shdir/unbansite.txt $shdir/msgbuff/unban/0x
-    
+
 #Count
 banbytes=$(stat -c%s $shdir/checkone.txt)
 bancount=$(wc -l < $shdir/checkone.txt)
@@ -86,7 +87,7 @@ if [ "$isban" = true ]; then
         else
             for file1 in $shdir/msgbuff/ban/*
                 do
-                embedlist=$(cat "$file1") && curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data '{"content": " ","embeds": [{"title": "Заблокированые сегодня домены","description": "'"$embedlist"'","color": 16753314,"footer": {"text": "Отправлено с помощью Заптетян Lite","icon_url": "'"$boticon"'"}}],"username": "'"$botname"'","avatar_url": "'"$boticon"'"}' "$bansend" && sleep 1
+                embedlist=$(cat "$file1" | sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g') && curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data '{"content": " ","embeds": [{"title": "Заблокированые сегодня домены","description": "'"$embedlist"'","color": 16753314,"footer": {"text": "Отправлено с помощью Заптетян Lite","icon_url": "'"$boticon"'"}}],"username": "'"$botname"'","avatar_url": "'"$boticon"'"}' "$bansend" && sleep 1
                 done
             curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data '{"content": "**:fire: Сегодня заблокировано доменов:__ '"$bancount"' __!** \n:no_entry_sign: Всего заблокировано:__ '"$totalbanned"' __","username": "'"$botname"'","avatar_url": "'"$boticon"'"}' "$bansend"
         fi
@@ -106,9 +107,9 @@ if [ "$isunban" = true ]; then
             #Send Unban List
             for file2 in $shdir/msgbuff/unban/*
                 do
-                embedlist=$(cat "$file2") && curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data '{"content": " ","embeds": [{"title": "Разблокированые сегодня домены","description": "'"$embedlist"'","color": 10669055,"footer": {"text": "Отправлено с помощью Заптетян Lite","icon_url": "'"$boticon"'"}}],"username": "'"$botname"'","avatar_url": "'"$boticon"'"}' "$unbansend" && sleep 2
+                embedlist=$(cat "$file2" | sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g') && curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data '{"content": " ","embeds": [{"title": "Разблокированые сегодня домены","description": "'"$embedlist"'","color": 10669055,"footer": {"text": "Отправлено с помощью Заптетян Lite","icon_url": "'"$boticon"'"}}],"username": "'"$botname"'","avatar_url": "'"$boticon"'"}' "$unbansend" && sleep 1
                 done
-        curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data '{"content": "**:large_blue_diamond: Сегодня разблокировано доменов:__ '"$unbancount"' __! :large_blue_diamond:**","username": "'"$botname"'","avatar_url": "'"$boticon"'"}' "$unbansend"
+            curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data '{"content": "**:large_blue_diamond: Сегодня разблокировано доменов:__ '"$unbancount"' __! :large_blue_diamond:**","username": "'"$botname"'","avatar_url": "'"$boticon"'"}' "$unbansend"
         fi
     done
 fi

@@ -1,0 +1,5 @@
+[Unit]
+Description=Zapretyan Lite - Discord Webhook
+
+[Service]
+ExecStart=/bin/bash /path/zapretyan/zapretyanlite.sh
