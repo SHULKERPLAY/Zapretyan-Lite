@@ -1,8 +1,8 @@
-![Запретян <3](https://github.com/SHULKERPLAY/Zapretyan-Lite/blob/main/zapretyanlite.png)
+![Запретян <3](https://github.com/SHULKERPLAY/Zapretyan-Lite/blob/discord/zapretyanlite.png)
 > Readme is only available in russian
 
 # Запретян Лайт / Zapretyan Lite
-[![CodeFactor](https://www.codefactor.io/repository/github/shulkerplay/Zapretyan-Lite/badge/main)](https://www.codefactor.io/repository/github/shulkerplay/Zapretyan-Lite/overview/main) ![GitHub Release](https://img.shields.io/github/v/release/shulkerplay/Zapretyan-Lite) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/shulkerplay/Zapretyan-Lite) ![Discord](https://img.shields.io/discord/683814496942424078?label=Discord) ![YouTube Channel Views](https://img.shields.io/youtube/channel/views/UCWoypHEOaTh6N9zwCtRzr0w) 
+[![CodeFactor](https://www.codefactor.io/repository/github/shulkerplay/Zapretyan-Lite/badge/discord)](https://www.codefactor.io/repository/github/shulkerplay/Zapretyan-Lite/overview/discord) ![GitHub Release](https://img.shields.io/github/v/release/shulkerplay/Zapretyan-Lite) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/shulkerplay/Zapretyan-Lite) ![Discord](https://img.shields.io/discord/683814496942424078?label=Discord) ![YouTube Channel Views](https://img.shields.io/youtube/channel/views/UCWoypHEOaTh6N9zwCtRzr0w) 
 
 **Вывод новых блокировок ресурсов в Российской Федерации через вебхуки в Discord!**  
 
@@ -34,9 +34,9 @@
 ### Супербыстрая установка  
 **Вам понадобится Debian или Ubuntu с установленным wget**  
 
-    wget -O- 'https://raw.githubusercontent.com/SHULKERPLAY/Zapretyan-Lite/refs/heads/main/service_install.sh' | bash
+    wget -O- 'https://raw.githubusercontent.com/SHULKERPLAY/Zapretyan-Lite/refs/heads/discord/service_install.sh' | bash
 
-**И не забудьте поменять [конфигурацию в shell/config.cfg](https://github.com/SHULKERPLAY/Zapretyan-Lite/tree/main?tab=readme-ov-file#%D0%BA%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D1%8F).** А именно настройте опции `banhook`, `unbanhook` и `errorping` по своему усмотрению
+**И не забудьте поменять [конфигурацию в shell/config.cfg](https://github.com/SHULKERPLAY/Zapretyan-Lite/tree/discord?tab=readme-ov-file#%D0%BA%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D1%8F).** А именно настройте опции `banhook`, `unbanhook` и `errorping` по своему усмотрению
 
 ### Или устанавливаем сервис вручную
 
@@ -46,7 +46,7 @@
 
 Или скачайте архив репозитория  
 
-    wget -O zapretyan.zip 'https://github.com/SHULKERPLAY/Zapretyan-Lite/archive/refs/heads/main.zip'
+    wget -O zapretyan.zip 'https://github.com/SHULKERPLAY/Zapretyan-Lite/archive/refs/heads/discord.zip'
 
 Распакуйте его  
   
@@ -76,7 +76,7 @@
 
 Далее вписываем вебхуки нужных каналов и сохраняем файл. Подробная инструкция по конфигу есть ниже.  
 
-**Не забудьте поменять [конфигурацию в shell/config.cfg](https://github.com/SHULKERPLAY/Zapretyan/tree/main?tab=readme-ov-file#%D0%BA%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D1%8F).** А именно настройте опции `bancid`, `unbancid`, `banipcid`, `unbanipcid` и `errorping` по своему усмотрению
+**Не забудьте поменять [конфигурацию в shell/config.cfg](https://github.com/SHULKERPLAY/Zapretyan/tree/discord?tab=readme-ov-file#%D0%BA%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D1%8F).** А именно настройте опции `bancid`, `unbancid`, `banipcid`, `unbanipcid` и `errorping` по своему усмотрению
 
 Теперь делаем так, чтобы рассылка **включалась каждый день**. Главный исполнительный скрипт - `shell/zapretyanlite.sh`, который нужно исполнять автоматически каждый день.  
   
@@ -141,7 +141,7 @@
 
 *Аналогичным способом можно создавать и другие системные сервисы, просто меняя имя службы и путь к скрипту*  
 
-##Что такое вебхук?
+## Что такое вебхук?
 Вебхук Discord — это уникальный URL-адрес, который позволяет автоматически отправлять сообщения в определенный канал сервера без участия бота.
 Каждый URL привязывается к чату, в который запретян отсылает списки. Именно поэтому, желательно,
 для блокировок и разбанов нужно два отдельных чата, соответственно и два вебхука.
