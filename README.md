@@ -42,7 +42,7 @@
 
 Скачайте архив из последнего релиза  
 
-    wget -O zapretyan.tar 'https://github.com/SHULKERPLAY/Zapretyan-Lite/releases/download/1/zapretyan.tar.gz'
+    wget -O zapretyan.tar 'https://github.com/SHULKERPLAY/Zapretyan-Lite/releases/download/2/zapretyan.tar.gz'
 
 Или скачайте архив репозитория  
 
@@ -155,10 +155,13 @@
 
     banhook=("https://discord.com/api/webhooks/")
     unbanhook=("https://discord.com/api/webhooks/")
+    totalhook=("https://discord.com/api/webhooks/")
 
 `banhook` - Ссылка из созданного вебхука Discord в который будут выводиться все новые блокировки с прошлого сравнения
 
 `unbanhook` - Ссылка из созданного вебхука Discord в который будут выводиться все снятые блокировки с прошлого сравнения
+
+`totalhook` - Ссылка из созданного вебхука Discord в который будут выводиться сообщения с общей статистикой за день
 
 Для рассылки в несколько чатов (вебхуков) Файл конфигурации будет выглядеть так:
 
@@ -181,10 +184,13 @@
 
     isban=true
     isunban=true
+    istotal=true
 
 `isban` - отключает любые отправки в вебхук `banhook`
 
 `isunban` - отключает любые отправки в вебхук `unbanhook`
+
+`istotal` - отключает любые отправки в вебхук `totalhook`
 
 `errorsend=true` - Переключатель вывода сервисных сообщений, например, когда с прошлого дня не произошло никаких изменений
 
@@ -215,6 +221,21 @@
     21.05.2025 ; 1667 ; 118 ; 831954
     22.05.2025 ; 1772 ; 95 ; 833631
     23.05.2025 ; 1573 ; 47 ; 835157
+	
+### Пример упрощённой конфигурации
+Так, если, например, вы не хотите подробный список, а хотите одно сообщение со статистикой, ваши настройки будут выглядеть так:
+
+    isban=false
+    isunban=false
+    istotal=true
+	
+    banhook=("")
+    unbanhook=("")
+    totalhook=("https://discord.com/api/webhooks/Ns9rsbvQh4KJl7oXo")
+    
+Скриншот с примером из полной версии. (В лайт версии не будет данных по блокировке IP адресов)
+
+![istotal=true](https://lunarcreators.ru/wp-content/uploads/2025/11/zapdemo2.webp)
 
 ### Смена цвета встроенных сообщений и текста
 В Lite концепции не предусмотрено изменение цвета через конфигурацию, поэтому нужно менять цвет внутри скрипта

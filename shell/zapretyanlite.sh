@@ -1,5 +1,5 @@
 #!/bin/bash
-#Ver 1.17
+#Ver 2.05
 bashdir=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 . $bashdir/config.cfg
 
@@ -75,6 +75,16 @@ if [ "$analytics" = true ]; then
     echo -e "$csvdate ; $bancount ; $unbancount ; $totalbanned" >> $shdir/analytics.csv
 fi
 
+#Send total statistics
+if [ "$istotal" = true ]; then
+    totaloldbanned=$(wc -l < $shdir/old.txt)
+    totaldiff=$(($totalbanned-$totaloldbanned))
+    for totalsend in "${totalhook[@]}"; do
+        embedlist='**__ДОМЕНЫ__**\n:fire: Сегодня заблокировано: __'$bancount'__!\n:large_blue_diamond: Сегодня разблокировано: __'$unbancount'__!\n:no_entry_sign: Всего заблокировано: __'$totalbanned'__ `('$(printf "%+d\n" "$totaldiff")' за прошедшие сутки)`!'
+        curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data '{"content": " ","embeds": [{"title": ":pushpin: Статистика за '"$qdate"'","description": "'"$embedlist"'","color": 16777085,"author": {"name": "'"$botname"'","url": "https://github.com/SHULKERPLAY/Zapretyan-Lite","icon_url": "'"$boticon"'"},"footer": {"text": "Отправлено с помощью Заптетян Lite","icon_url": "'"$boticon"'"}}],"username": "'"$botname"'","avatar_url": "'"$boticon"'"}' "$totalsend" && sleep 1
+    done
+fi
+
 #Send List of new domain Bans
 if [ "$isban" = true ]; then
     for bansend in "${banhook[@]}"; do
@@ -87,7 +97,7 @@ if [ "$isban" = true ]; then
         else
             for file1 in $shdir/msgbuff/ban/*
                 do
-                embedlist=$(cat "$file1" | sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g') && curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data '{"content": " ","embeds": [{"title": "Заблокированые сегодня домены","description": "'"$embedlist"'","color": 16753314,"footer": {"text": "Отправлено с помощью Заптетян Lite","icon_url": "'"$boticon"'"}}],"username": "'"$botname"'","avatar_url": "'"$boticon"'"}' "$bansend" && sleep 1
+                embedlist=$(cat "$file1" | sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g') && curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data '{"content": " ","embeds": [{"title": "Заблокированые сегодня домены","description": "'"$embedlist"'","color": 16753314,"author": {"name": "'"$botname"'","url": "https://github.com/SHULKERPLAY/Zapretyan-Lite","icon_url": "'"$boticon"'"},"footer": {"text": "Отправлено с помощью Заптетян Lite","icon_url": "'"$boticon"'"}}],"username": "'"$botname"'","avatar_url": "'"$boticon"'"}' "$bansend" && sleep 1
                 done
             curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data '{"content": "**:fire: Сегодня заблокировано доменов:__ '"$bancount"' __!** \n:no_entry_sign: Всего заблокировано:__ '"$totalbanned"' __","username": "'"$botname"'","avatar_url": "'"$boticon"'"}' "$bansend"
         fi
@@ -99,7 +109,7 @@ if [ "$isunban" = true ]; then
     for unbansend in "${unbanhook[@]}"; do
         if [ "$unbanbytes" -le "2" ]; then
             if [ "$errorsend" = true ]; then
-                curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data '{"content": ":orange_book: *:orange_book: *Сегодня никого не разблокировали!* '"$errorping"'","username": "'"$botname"'","avatar_url": "'"$boticon"'"}' "$unbansend"
+                curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data '{"content": ":orange_book: *Сегодня никого не разблокировали!* '"$errorping"'","username": "'"$botname"'","avatar_url": "'"$boticon"'"}' "$unbansend"
             else
                 sleep 1
             fi
@@ -107,13 +117,13 @@ if [ "$isunban" = true ]; then
             #Send Unban List
             for file2 in $shdir/msgbuff/unban/*
                 do
-                embedlist=$(cat "$file2" | sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g') && curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data '{"content": " ","embeds": [{"title": "Разблокированые сегодня домены","description": "'"$embedlist"'","color": 10669055,"footer": {"text": "Отправлено с помощью Заптетян Lite","icon_url": "'"$boticon"'"}}],"username": "'"$botname"'","avatar_url": "'"$boticon"'"}' "$unbansend" && sleep 1
+                embedlist=$(cat "$file2" | sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g') && curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data '{"content": " ","embeds": [{"title": "Разблокированые сегодня домены","description": "'"$embedlist"'","color": 10669055,"author": {"name": "'"$botname"'","url": "https://github.com/SHULKERPLAY/Zapretyan-Lite","icon_url": "'"$boticon"'"},"footer": {"text": "Отправлено с помощью Заптетян Lite","icon_url": "'"$boticon"'"}}],"username": "'"$botname"'","avatar_url": "'"$boticon"'"}' "$unbansend" && sleep 1
                 done
             curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data '{"content": "**:large_blue_diamond: Сегодня разблокировано доменов:__ '"$unbancount"' __! :large_blue_diamond:**","username": "'"$botname"'","avatar_url": "'"$boticon"'"}' "$unbansend"
         fi
     done
 fi
-  
+
 #Cleanup
 rm $shdir/checkone.txt
 rm $shdir/checktwo.txt
